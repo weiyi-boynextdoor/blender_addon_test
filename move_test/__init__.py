@@ -14,7 +14,7 @@
 import bpy
 
 bl_info = {
-    "name" : "asswecan_test",
+    "name" : "move_test",
     "author" : "boynextdoor",
     "description" : "",
     "blender" : (2, 80, 0),
@@ -24,19 +24,32 @@ bl_info = {
     "category" : "Generic"
 }
 
-class AssWeCanPanel(bpy.types.Panel):
-    bl_idname = "ASS_WE_CAN"
-    bl_label = "Ass we can"
+class MoveOperator(bpy.types.Operator):
+    bl_label = "Move X by 1"
+    bl_idname = "move.move_x_by_1"
+
+    def execute(self, context):
+        for object in bpy.context.selectable_objects:
+            object.location.x += 1
+        return {'FINISHED'}
+
+class MoveTestPanel(bpy.types.Panel):
+    bl_idname = "MOVE_TEST"
+    bl_label = "Move Test"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_category = "Ass"
+    bl_category = "Move"
 
     # Draw the panel UI
     def draw(self, context):
-        pass
+        layout = self.layout
+        column = layout.column()
+        column.label(text="xxxx")
+        column.operator(MoveOperator.bl_idname, text="Move x by 1")
 
 classes = (
-    AssWeCanPanel,
+    MoveTestPanel,
+    MoveOperator,
 )
 
 def register():
@@ -46,6 +59,3 @@ def register():
 def unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
-
-# if __name__ == "__main__":
-#     register()
